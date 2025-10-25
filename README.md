@@ -4,7 +4,7 @@ Trabalho da disciplina de Projeto de Sistema Operacional, que consiste em um sim
 
 O programa possui uma interface gráfica (GUI) em Java Swing para fácil utilização, além de um modo console para execução de testes via terminal.
 
-![Screenshot da GUI do Simulador](httpsimg.png)
+![Screenshot da GUI do Simulador](img.png)
 
 ## Algoritmos Implementados
 
