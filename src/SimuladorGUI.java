@@ -21,21 +21,37 @@ public class SimuladorGUI {
         c.insets = new Insets(5, 5, 5, 5);
         painelEntradas.setBorder(BorderFactory.createTitledBorder("Entradas da Simulação"));
 
-        c.gridx = 0; c.gridy = 0; c.anchor = GridBagConstraints.EAST;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.EAST;
         painelEntradas.add(new JLabel("Cadeia de Páginas:"), c);
 
-        c.gridx = 1; c.gridy = 0; c.weightx = 1.0; c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         campoCadeia = new JTextField("7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1");
         painelEntradas.add(campoCadeia, c);
 
-        c.gridx = 0; c.gridy = 1; c.weightx = 0.0; c.fill = GridBagConstraints.NONE; c.anchor = GridBagConstraints.EAST;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 0.0;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         painelEntradas.add(new JLabel("Número de Quadros:"), c);
 
-        c.gridx = 1; c.gridy = 1; c.weightx = 1.0; c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         campoQuadros = new JTextField("4");
         painelEntradas.add(campoQuadros, c);
 
-        c.gridx = 1; c.gridy = 2; c.weightx = 0.0; c.fill = GridBagConstraints.NONE; c.anchor = GridBagConstraints.EAST;
+        c.gridx = 1;
+        c.gridy = 2;
+        c.weightx = 0.0;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         JButton botaoSimular = new JButton("Simular");
         painelEntradas.add(botaoSimular, c);
 
