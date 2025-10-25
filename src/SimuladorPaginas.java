@@ -2,6 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 import java.util.Scanner;
 
 public class SimuladorPaginas {
@@ -36,8 +37,12 @@ public class SimuladorPaginas {
 
             // Etapa 1: Simular FIFO
             int faltasFIFO = simularFIFO(cadeiaReferencias, numeroDeFrames);
+            // Etapa 2: LRU
+            int faltasLRU = simularLRU(cadeiaReferencias, numeroDeFrames);
+
             System.out.println("\n--- Resultados Finais ---");
             System.out.println("Método FIFO: " + faltasFIFO + " faltas de página");
+            System.out.println("Método LRU: " + faltasLRU + " faltas de página");
         } catch (NumberFormatException e) {
             System.err.println("Erro: Entrada inválida. Por favor, insira apenas números inteiros separados por espaço.");
         } catch (Exception e) {
@@ -74,6 +79,39 @@ public class SimuladorPaginas {
                 System.out.print(" -> Hit.");
             }
             System.out.println(" | Quadros: " + filaFIFO);
+        }
+        return faltasPagina;
+    }
+
+    public static int simularLRU(int[] cadeiaReferencias, int numeroQuadros) {
+        Set<Integer> quadros = new HashSet<>();
+        List<Integer> ordemUso = new LinkedList<>();
+        int faltasPagina = 0;
+
+        System.out.println("\n--- Detalhes da Execução LRU ---");
+
+        for (int pagina : cadeiaReferencias) {
+            System.out.print("Acessando: " + pagina);
+
+            if (quadros.contains(pagina)) {
+                System.out.print(" -> Hit. ");
+                ordemUso.remove((Integer) pagina);
+                ordemUso.add(pagina);
+
+            } else {
+                faltasPagina++;
+                System.out.print(" -> Falta! ");
+
+                if (quadros.size() == numeroQuadros) {
+                    int paginaRemovida = ordemUso.removeFirst();
+                    quadros.remove(paginaRemovida);
+                    System.out.print("[Remove LRU " + paginaRemovida + "] ");
+                }
+                quadros.add(pagina);
+                ordemUso.add(pagina);
+                System.out.print("[Adiciona " + pagina + "]");
+            }
+            System.out.println(" | Quadros (LRU...MRU): " + ordemUso);
         }
         return faltasPagina;
     }
