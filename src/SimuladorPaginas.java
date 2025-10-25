@@ -3,6 +3,9 @@ import java.util.Queue;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
+import utils.FrameRelogio;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class SimuladorPaginas {
@@ -39,10 +42,13 @@ public class SimuladorPaginas {
             int faltasFIFO = simularFIFO(cadeiaReferencias, numeroDeFrames);
             // Etapa 2: LRU
             int faltasLRU = simularLRU(cadeiaReferencias, numeroDeFrames);
+            // Etapa 3: Relógio
+            int faltasRelogio = simularRelogio(cadeiaReferencias, numeroDeFrames);
 
             System.out.println("\n--- Resultados Finais ---");
             System.out.println("Método FIFO: " + faltasFIFO + " faltas de página");
             System.out.println("Método LRU: " + faltasLRU + " faltas de página");
+            System.out.println("Método Relógio: " + faltasRelogio + " faltas de página");
         } catch (NumberFormatException e) {
             System.err.println("Erro: Entrada inválida. Por favor, insira apenas números inteiros separados por espaço.");
         } catch (Exception e) {
@@ -112,6 +118,63 @@ public class SimuladorPaginas {
                 System.out.print("[Adiciona " + pagina + "]");
             }
             System.out.println(" | Quadros (LRU...MRU): " + ordemUso);
+        }
+        return faltasPagina;
+    }
+
+    public static int simularRelogio(int[] cadeiaReferencias, int numeroQuadros) {
+        FrameRelogio[] quadros = new FrameRelogio[numeroQuadros];
+        Map<Integer, Integer> mapaPaginas = new HashMap<>();
+        int ponteiro = 0;
+        int faltasPagina = 0;
+
+        System.out.println("\n--- Detalhes da Execução Relógio ---");
+
+        for (int pagina : cadeiaReferencias) {
+            System.out.print("Acessando: " + pagina);
+
+            if (mapaPaginas.containsKey(pagina)) {
+                System.out.print(" -> Hit. ");
+                int indice = mapaPaginas.get(pagina);
+                quadros[indice].bitR = true;
+                System.out.print("[Seta R=1 para pág " + pagina + "]");
+            } else {
+                faltasPagina++;
+                System.out.print(" -> Falta! ");
+                while (true) {
+                    if (quadros[ponteiro] == null) {
+                        quadros[ponteiro] = new FrameRelogio(pagina);
+                        mapaPaginas.put(pagina, ponteiro);
+                        System.out.print("[Adiciona " + pagina + " no Q" + ponteiro + "]");
+                        ponteiro = (ponteiro + 1) % numeroQuadros;
+                        break;
+                    }
+                    if (quadros[ponteiro].bitR) {
+                        quadros[ponteiro].bitR = false;
+                        ponteiro = (ponteiro + 1) % numeroQuadros;
+                    }
+                    else {
+                        int paginaRemovida = quadros[ponteiro].pagina;
+                        System.out.print("[Remove " + paginaRemovida + " do Q" + ponteiro + "(R=0)] ");
+                        mapaPaginas.remove(paginaRemovida);
+                        quadros[ponteiro] = new FrameRelogio(pagina);
+                        mapaPaginas.put(pagina, ponteiro);
+                        System.out.print("[Adiciona " + pagina + " no Q" + ponteiro + "]");
+                        ponteiro = (ponteiro + 1) % numeroQuadros;
+                        break;
+                    }
+                }
+            }
+
+            System.out.print(" | Quadros: [");
+            for (int i = 0; i < numeroQuadros; i++) {
+                if (quadros[i] == null) {
+                    System.out.print(" (vazio) ");
+                } else {
+                    System.out.print(" Q" + i + ":" + quadros[i].toString() + " ");
+                }
+            }
+            System.out.println("] (Ponteiro aponta para Q" + ponteiro + ")");
         }
         return faltasPagina;
     }
