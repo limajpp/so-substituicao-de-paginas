@@ -2,7 +2,9 @@
 
 Trabalho da disciplina de Projeto de Sistema Operacional, que consiste em um simulador em Java para comparar o desempenho de diferentes algoritmos de substituição de páginas.
 
-O programa é executado via console, solicitando ao usuário a cadeia de referência de páginas e o número de quadros (frames) de memória disponíveis.
+O programa possui uma interface gráfica (GUI) em Java Swing para fácil utilização, além de um modo console para execução de testes via terminal.
+
+![Screenshot da GUI do Simulador](httpsimg.png)
 
 ## Algoritmos Implementados
 
@@ -15,40 +17,44 @@ O simulador implementa e compara 4 dos principais algoritmos de substituição d
 
 ## Como Executar
 
-Existem duas formas de executar o projeto: via IDE ou via terminal.
+O projeto pode ser executado de duas formas: através da Interface Gráfica (principal) ou do Modo Console (legado/debug).
 
-### Opção 1: Execução via IDE (Recomendado)
+### Opção 1: Interface Gráfica (GUI)
 
+**Via IDE (IntelliJ, Eclipse, etc.):**
 1.  Clone este repositório.
-2.  Abra o projeto em sua IDE de preferência (o projeto está configurado para IntelliJ IDEA, mas funciona em outras).
-3.  Localize o arquivo `src/SimuladorPaginas.java`.
+2.  Abra o projeto na sua IDE.
+3.  Localize o arquivo `src/SimuladorGUI.java`.
 4.  Execute o método `main()` contido neste arquivo.
 
-### Opção 2: Execução via Terminal
+#### Utilização da GUI
 
-Se você tiver o JDK (Java Development Kit) instalado, pode compilar e executar o projeto manualmente.
+1.  Preencha o campo **"Cadeia de Páginas"** com os números separados por espaço (ex: `7 0 1 2 0 3 0 4`).
+2.  Preencha o campo **"Número de Quadros"** (ex: `4`).
+3.  Clique no botão **"Simular"**.
+4.  Os resultados finais comparativos aparecerão na área de "Resultados" da janela.
+5.  O log detalhado (passo a passo) de cada algoritmo será impresso no terminal/console de onde o `SimuladorGUI` foi executado (como solicitado por você).
 
-1.  Clone o repositório:
-    ```bash
-    git clone git@github.com:limajpp/so-substituicao-de-paginas.git
-    ```
+---
 
-2.  Abra o projeto e execute o método "main" da classe "SimuladorPaginas"
+### Opção 2: Modo Console (Legado/Debug)
 
-### Interação com o Programa
+Este modo executa a lógica diretamente no terminal, sem a interface gráfica.
 
-Após a execução, o programa fará duas perguntas:
+**Via IDE:**
+1.  Localize o arquivo `src/SimuladorPaginas.java`.
+2.  Execute o método `main()` contido neste arquivo.
+
+#### Utilização do Console
+
+O programa fará duas perguntas:
 
 1.  **Digite a cadeia de referência de páginas:**
-    * Insira os números das páginas separados por espaço.
-    * *Exemplo de teste curto:* `7 0 1 2 0 3 0 4`
-    * *Exemplo de teste longo:* `7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1`
-
+    * *Exemplo:* `7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1`
 2.  **Digite o número de quadros (frames) de memória:**
-    * Insira um número inteiro positivo.
     * *Exemplo:* `4`
 
-O programa exibirá o passo a passo (trace) de cada algoritmo e, ao final, um resumo comparativo com o total de faltas de página de cada um.
+O programa exibirá o passo a passo e o resumo comparativo diretamente no terminal.
 
 ## Autores
 
