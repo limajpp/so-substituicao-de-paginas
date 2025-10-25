@@ -44,11 +44,14 @@ public class SimuladorPaginas {
             int faltasLRU = simularLRU(cadeiaReferencias, numeroDeFrames);
             // Etapa 3: Relógio
             int faltasRelogio = simularRelogio(cadeiaReferencias, numeroDeFrames);
+            // Etapa 4: Ótimo
+            int faltasOtimo = simularOtimo(cadeiaReferencias, numeroDeFrames);
 
             System.out.println("\n--- Resultados Finais ---");
             System.out.println("Método FIFO: " + faltasFIFO + " faltas de página");
             System.out.println("Método LRU: " + faltasLRU + " faltas de página");
             System.out.println("Método Relógio: " + faltasRelogio + " faltas de página");
+            System.out.println("Método Ótimo: " + faltasOtimo + " faltas de página");
         } catch (NumberFormatException e) {
             System.err.println("Erro: Entrada inválida. Por favor, insira apenas números inteiros separados por espaço.");
         } catch (Exception e) {
@@ -175,6 +178,51 @@ public class SimuladorPaginas {
                 }
             }
             System.out.println("] (Ponteiro aponta para Q" + ponteiro + ")");
+        }
+        return faltasPagina;
+    }
+
+    public static int simularOtimo(int[] cadeiaReferencias, int numeroQuadros) {
+        Set<Integer> quadros = new HashSet<>();
+        int faltasPagina = 0;
+
+        System.out.println("\n--- Detalhes da Execução Ótimo ---");
+
+        for (int i = 0; i < cadeiaReferencias.length; i++) {
+            int pagina = cadeiaReferencias[i];
+            System.out.print("Acessando: " + pagina);
+            if (!quadros.contains(pagina)) {
+                faltasPagina++;
+                System.out.print(" -> Falta! ");
+                if (quadros.size() == numeroQuadros) {
+                    int paginaASubstituir = -1;
+                    int maiorDistanciaFutura = -1;
+                    for (int paginaNoQuadro : quadros) {
+                        int distanciaAtual = Integer.MAX_VALUE;
+                        for (int j = i + 1; j < cadeiaReferencias.length; j++) {
+                            if (cadeiaReferencias[j] == paginaNoQuadro) {
+                                distanciaAtual = j;
+                                break;
+                            }
+                        }
+                        if (distanciaAtual == Integer.MAX_VALUE) {
+                            paginaASubstituir = paginaNoQuadro;
+                            break;
+                        }
+                        if (distanciaAtual > maiorDistanciaFutura) {
+                            maiorDistanciaFutura = distanciaAtual;
+                            paginaASubstituir = paginaNoQuadro;
+                        }
+                    }
+                    System.out.print("[Remove " + paginaASubstituir + "] ");
+                    quadros.remove(paginaASubstituir);
+                }
+                quadros.add(pagina);
+                System.out.print("[Adiciona " + pagina + "]");
+            } else {
+                System.out.print(" -> Hit.");
+            }
+            System.out.println(" | Quadros: " + quadros);
         }
         return faltasPagina;
     }
